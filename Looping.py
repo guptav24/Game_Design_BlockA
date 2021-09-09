@@ -4,6 +4,7 @@
 
 #Import Library
 import os
+print()
 
 #Use library to clear terminal
 os.system('cls')

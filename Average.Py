@@ -7,6 +7,7 @@ test1 = 90
 test2 = 87
 test3 = 89
 test4 = 93
+print()
 
 #Declare sum and average
 sum = (test1 + test2 + test3 + test4)

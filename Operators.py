@@ -13,6 +13,8 @@ rem = num%2
 remPlace1 = num%10
 remPlace2 = num%100
 remPlace3 = num%1000
+num = num*3
+#I need to change
 
 # #Conditional
 # if(rem == 0):
