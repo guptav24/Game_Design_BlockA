@@ -1,5 +1,6 @@
-#using random numbers
-#guess a number
+#Vivaan Gupta
+#09/21/2021
+#This is a program about random
 
 import os
 import random 
