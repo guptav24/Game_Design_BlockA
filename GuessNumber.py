@@ -29,10 +29,7 @@ while game == "Y":
         else:
             if(guess == randNum):   #If you got it right
                 print("You win!")
-                game = input("Do you want to play again? Type Y if yes, and N if no: ")
-                if game == "Y":
-                    randNum = random.randrange(1,100)
-                    counter = 1
+
                 else:
                     print("Thank you for playing!")
             else:
@@ -46,9 +43,3 @@ while game == "Y":
                     print("You have ", turns, " left")
         if (counter == 10): #If you used up all your tries
             print("You lost!")
-            game = ("Do you want to play again? Type Y if yes, and N if no: ")
-            if game == "Y":
-                randNum = random.randrange(1,100)
-                counter = 1
-            else:
-                print("Thank you for playing!")
