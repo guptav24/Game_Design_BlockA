@@ -29,6 +29,7 @@ while game == "Y":
         else:
             if(guess == randNum):   #If you got it right
                 print("You win!")
+
             else:
                 print("Try again")
                 if (guess < randNum):
