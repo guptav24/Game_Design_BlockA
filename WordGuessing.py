@@ -9,10 +9,10 @@ os.system('cls')
 counter = 1
 program = 1
 words = ["peach","apple","orange","grape","cherry","watermelon","banana","strawberry","blueberry","mango"]
+print(words)
 print ("This is a list of fruits. I have chosen a random fruit from this list. You have 5 guesses to try and guess which fruit I chose!")
 game = input("Do you want to play? Type Y for yes or N for no: ")
 randWord = random.choice(words)   #This picks a random word in the list
-print(randWord)
 
 while ("Y" and "y" in game):
 
