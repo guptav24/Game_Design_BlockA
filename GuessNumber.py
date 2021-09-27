@@ -12,7 +12,7 @@ print ("I have picked a number between 1 and 100. You have to guess. You have 10
 game = input("Do you want to play? Type Y for yes or N for no: ")
 randNum = random.randrange(1,100)   #This picks a random number btween 1-100
 
-while ("Y" or "y" in game):
+while ("Y" and 'y' in game):
 
     while (program == 1 and counter!=11):
 
@@ -33,6 +33,7 @@ while ("Y" or "y" in game):
         else:
             if(guess == randNum):   #If you got it right
                 print("You win!")
+                print("You took",counter,"tries!")
                 program=0
 
             else:
@@ -48,6 +49,7 @@ while ("Y" or "y" in game):
 
         if (counter == 10): #If you used up all your tries
             print("You lost!")
+            print("You took",counter,"tries!")
             program = 0
 
     game = input("Do you want to play again? Type Y for yes or N for no: ")
