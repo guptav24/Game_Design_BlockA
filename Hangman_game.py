@@ -13,6 +13,9 @@ def updateWord(randWord,guesses):
         else:
             print("_",end=" ")
 
+counter = 0
+wins = 0
+
 def menu():
     print("####################################################")
     print("#    This is a guessing game! Choose a category!   #")
@@ -25,6 +28,9 @@ def menu():
     print("#                   4. EXIT                        #")
     print("#                                                  #")
     print("# To play the game, select 1-3, to exit, select 4. #")
+    print("#                                                  #")
+    print("#                 Games played: " , counter, "                #")
+    print("#                  Games won: " , wins, "                  #")
     print("####################################################")
     print()
     sel=input("What would you like to play? ")
@@ -44,7 +50,7 @@ def selWord(sel):
     if sel == 3:
         randWord = random.choice(compParts)
     return randWord
-    
+
 animals = ["tiger","elephant","monkey","lion"]
 compParts = ["keyboard","monitor","computer","case","trackpad"]
 fruits = ["peach","apple","orange","grape","cherry","watermelon","banana","strawberry","blueberry","mango"]
@@ -54,11 +60,9 @@ counter = 0
 wins = 0
 sel = menu()
 game = "y"
-
 while sel!=4 and ("Y" and "y" in game):
     print("Good Luck "+name+"! You have 5 lives")
     turns = 5
-    counter += 1
     randWord = selWord(sel)
     randWord = randWord.lower()
     wordCount = len(randWord)
@@ -87,9 +91,12 @@ while sel!=4 and ("Y" and "y" in game):
 
     if turns == 0:
         print("You lose!")
+        counter += 1
     else:
         print()
-        print("You win!")            
+        print("You win!")
+        counter += 1
+        wins+=1
     game = input("Do you want to play again? Type Y for yes or N for no: ")
     if ("Y" and "y" in game):
         sel = menu()
@@ -97,7 +104,3 @@ while sel!=4 and ("Y" and "y" in game):
         sel = 4
 
 print("Thank you for playing!")
-        
-    
-
-
