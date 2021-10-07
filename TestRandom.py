@@ -13,6 +13,11 @@ def updateWord(randWord,guesses):
         else:
             print("_",end=" ")
 
+def printScores():
+    myFile=open('score.txt','r')
+    print(myFile.read())
+    myFile.close()
+
 def menu():
     print("####################################################")
     print("#    This is a guessing game! Choose a category!   #")
@@ -22,16 +27,19 @@ def menu():
     print("#                   1. ANIMALS                     #")
     print("#                   2. FRUITS                      #")
     print("#                   3. COMP PARTS                  #")
-    print("#                   4. EXIT                        #")
+    print("#                   4. SCOREBOARD                  #")
+    print("#                   5. EXIT                        #")
     print("#                                                  #")
-    print("# To play the game, select 1-3, to exit, select 4. #")
+    print("# To play the game, select 1-4, to exit, select 5. #")
     print("#                                                  #")
     print("####################################################")
     print()
-    sel=input("What would you like to play? ")
+    sel=input("What would you like to do? ")
+    if sel == 4:
+        printScores()
     try:
         sel = int(sel)  #Tries if it is an integer
-        if sel < 5 and sel > 0:
+        if sel < 6 and sel > 0:
             check = True
             return sel
     except ValueError:
@@ -46,6 +54,9 @@ def selWord(sel):
         randWord = random.choice(fruits)
     if sel == 3:
         randWord = random.choice(compParts)
+    if sel == 4:
+        printScores()
+        randWord = ""
     return randWord
 
 animals = ["tiger","elephant","monkey","lion","zebra","panther","rhino","dog","cat","bird","fish"]
@@ -54,9 +65,12 @@ fruits = ["peach","apple","orange","grape","cherry","watermelon","banana","straw
 
 name = input("What is your name? ")
 maxScore = 0
-sel = menu()
+sel=menu()
 game = "y"
-while sel!=4 and ("Y" and "y" in game):
+while sel!=5 and ("Y" and "y" in game):
+    if sel == 4:
+        printScores()
+        sel=menu()
     randWord = selWord(sel)
     randWord = randWord.lower()
     wordCount = len(randWord)
@@ -90,15 +104,19 @@ while sel!=4 and ("Y" and "y" in game):
     else:
         print()
         print("You win!")
-    os.system('cls')
     score = 3*wordCount+5*turns
     if score>maxScore:
         maxScore = score
-    print (maxScore)
+    myFile=open('score.txt','w')
+    myFile.write('High Score: '+name+': '+str(maxScore))
+    myFile.write("\n")
+    myFile.write(name+": "+ str(score))
+    myFile.close()
     game = input("Do you want to play again? Type Y for yes or N for no: ")
     if ("Y" and "y" in game):
+        os.system('cls')
         sel = menu()
     if ("n" and "N" in game):
-        sel = 4
+        sel = 5
 
 print("Thank you for playing!")
