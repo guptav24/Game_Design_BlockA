@@ -18,25 +18,34 @@ def printScores():
     print(myFile.read())
     myFile.close()
 
+def updateScores():
+    myFile=open('score.txt','w')
+    myFile.write('High Score: '+name+': '+str(maxScore))
+    myFile.close()
+
 def menu():
-    print("####################################################")
-    print("#    This is a guessing game! Choose a category!   #")
-    print("#                                                  #")
-    print("#                       MENU                       #")
-    print("#                                                  #")
-    print("#                   1. ANIMALS                     #")
-    print("#                   2. FRUITS                      #")
-    print("#                   3. COMP PARTS                  #")
-    print("#                   4. SCOREBOARD                  #")
-    print("#                   5. EXIT                        #")
-    print("#                                                  #")
-    print("# To play the game, select 1-4, to exit, select 5. #")
-    print("#                                                  #")
-    print("####################################################")
+    print("____________________________________________________")
+    print("|                                                  |")
+    print("|    This is a guessing game! Choose a category!   |")
+    print("|                                                  |")
+    print("|                       MENU                       |")
+    print("|                                                  |")
+    print("|                   1. ANIMALS                     |")
+    print("|                   2. FRUITS                      |")
+    print("|                   3. COMP PARTS                  |")
+    print("|                   4. SCOREBOARD                  |")
+    print("|                   5. EXIT                        |")
+    print("|                                                  |")
+    print("| To play the game, select 1-4, to exit, select 5. |")
+    print("|                                                  |")
+    print("____________________________________________________")
     print()
     sel=input("What would you like to do? ")
     if sel == 4:
         printScores()
+    if sel == 5:
+        randWord = ""
+        updateScores()
     try:
         sel = int(sel)  #Tries if it is an integer
         if sel < 6 and sel > 0:
@@ -57,6 +66,9 @@ def selWord(sel):
     if sel == 4:
         printScores()
         randWord = ""
+    if sel == 5:
+        randWord = ""
+        updateScores()
     return randWord
 
 animals = ["tiger","elephant","monkey","lion","zebra","panther","rhino","dog","cat","bird","fish"]
@@ -65,12 +77,13 @@ fruits = ["peach","apple","orange","grape","cherry","watermelon","banana","straw
 
 name = input("What is your name? ")
 maxScore = 0
-sel=menu()
 game = "y"
-while sel!=5 and ("Y" and "y" in game):
-    if sel == 4:
-        printScores()
-        sel=menu()
+sel=menu()
+if sel == 4:
+    randWord = ""
+    printScores()
+    sel = menu()
+while (sel==1 or sel == 2 or sel == 3) and ("Y" and "y" in game):
     randWord = selWord(sel)
     randWord = randWord.lower()
     wordCount = len(randWord)
@@ -116,7 +129,13 @@ while sel!=5 and ("Y" and "y" in game):
     if ("Y" and "y" in game):
         os.system('cls')
         sel = menu()
+        if sel == 4:
+            randWord = ""
+            printScores()
+            sel = menu()
     if ("n" and "N" in game):
         sel = 5
+        updateScores()
 
 print("Thank you for playing!")
+updateScores()
