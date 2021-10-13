@@ -1,29 +1,29 @@
 #Vivaan Gupta
 #09/27/2021
-#This is a hangman game
+#This is a word guessing game
 
 import os
 import random 
 os.system('cls')
 
-def updateWord(randWord,guesses):
+def updateWord(randWord,guesses):   #Print the dashes and letters (like _ _ a _ _ ) function
     for letter in randWord:
         if letter in guesses:
             print (letter,end=" ")
         else:
             print("_",end=" ")
 
-def printScores():
+def printScores():  #Function to print socres
     myFile=open('score.txt','r')
     print(myFile.read())
     myFile.close()
 
-def updateScores():
+def updateScores(): #Funvtion to update scores
     myFile=open('score.txt','w')
     myFile.write('High Score: '+name+': '+str(maxScore))
     myFile.close()
 
-def menu():
+def menu(): #Menu
     print("____________________________________________________")
     print("|                                                  |")
     print("|    This is a guessing game! Choose a category!   |")
@@ -41,9 +41,9 @@ def menu():
     print("____________________________________________________")
     print()
     sel=input("What would you like to do? ")
-    if sel == 4:
+    if sel == 4:    #Prints the scores if 4 is chosen
         printScores()
-    if sel == 5:
+    if sel == 5:    #Updates scores when exited
         randWord = ""
         updateScores()
     try:
@@ -56,7 +56,7 @@ def menu():
         sel=input("What would you like to play? ")
         check = False
         
-def selWord(sel):
+def selWord(sel):   #Function to choose a random word from the different lists
     if sel == 1:
         randWord = random.choice(animals)
     if sel == 2:
@@ -78,23 +78,23 @@ fruits = ["peach","apple","orange","grape","cherry","watermelon","banana","straw
 name = input("What is your name? ")
 maxScore = 0
 game = "y"
-sel=menu()
+sel=menu()  #Menu function
 if sel == 4:
     randWord = ""
     printScores()
     sel = menu()
-while (sel==1 or sel == 2 or sel == 3) and ("Y" and "y" in game):
+while (sel==1 or sel == 2 or sel == 3) and ("Y" and "y" in game):   #Y/y for play again
     randWord = selWord(sel)
     randWord = randWord.lower()
     wordCount = len(randWord)
-    turns = len(randWord) + 3
+    turns = len(randWord) + 3   #Number of tries you have
     print("Good Luck ",name,"! You have ", turns," lives")
     print (randWord)
     guesses = ""
     updateWord(randWord,guesses)
     letCount = 0
 
-    while turns > 0 and letCount<wordCount:
+    while turns > 0 and letCount<wordCount: #letCount increases by 1 each time you get a correct letter, and when it is equal to the number of letters in randWord, you win
         letCount = 0
         print()
         newGuess = input("Guess a letter: ")
@@ -117,15 +117,15 @@ while (sel==1 or sel == 2 or sel == 3) and ("Y" and "y" in game):
     else:
         print()
         print("You win!")
-    score = 3*wordCount+5*turns
-    if score>maxScore:
+    score = 3*wordCount+5*turns #Score calculator
+    if score>maxScore:  #Checks high score
         maxScore = score
     myFile=open('score.txt','w')
-    myFile.write('High Score: '+name+': '+str(maxScore))
+    myFile.write('High Score: '+name+': '+str(maxScore))    #Writes the score down
     myFile.write("\n")
     myFile.write(name+": "+ str(score))
     myFile.close()
-    game = input("Do you want to play again? Type Y for yes or N for no: ")
+    game = input("Do you want to play again? Type Y for yes or N for no: ") #Play again
     if ("Y" and "y" in game):
         os.system('cls')
         sel = menu()
