@@ -89,7 +89,6 @@ while (sel==1 or sel == 2 or sel == 3) and ("Y" and "y" in game):   #Y/y for pla
     wordCount = len(randWord)
     turns = len(randWord) + 3   #Number of tries you have
     print("Good Luck ",name,"! You have ", turns," lives")
-    print (randWord)
     guesses = ""
     updateWord(randWord,guesses)
     letCount = 0
