@@ -119,7 +119,7 @@ while run==True:
     pygame.draw.rect(window, (0,0,0), rect)
     pygame.draw.circle(window, (255,255,255),(xc, yc), rcircle)
     pygame.display.flip()
-    if rcircle == hbox*2+hbox:
+    if rcircle == hbox*2+hbox:  #If the Circle eats the box 5 times the circle wins
         pygame.quit
         print("CIRCLE WINS!")
         break
