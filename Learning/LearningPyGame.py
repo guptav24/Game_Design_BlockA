@@ -108,7 +108,7 @@ while run==True:
             xc += cspeed   
     window.fill(color)
 
-    point = (xc,yc)     #Collide point
+    point = (xc,yc)     #Circle point
     collide = rect.collidepoint(point)  #Sees if it is collides
     if collide:
         rcircle = rcircle+(hbox/2)
