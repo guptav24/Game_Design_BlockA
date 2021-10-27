@@ -49,7 +49,7 @@ while run:
     ySub+=150
     displaySub("Object Colors", ySub)
     ySub+=150
-    displaySub("ON/OFF", ySub)
+    displaySub("SOUNDS ON/OFF", ySub)
     #Print Window Size, Background color, Object Colors, ON/OFF
 
 pygame.quit()
