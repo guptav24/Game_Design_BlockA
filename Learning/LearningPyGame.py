@@ -52,13 +52,14 @@ pygame.display.set_caption("My Game Window")    #Name of the window
 pygame.display.flip()
 hbox=50
 wbox=50    #Dimensions of box
-rspeed=20 #Speed of moving rectangle
-cspeed = 20
-randx=int(random.randrange(0,width))
+rspeed=3.5 #Speed of moving rectangle
+cspeed = 3.5
+randx=int(random.randrange(0,width))    #Spawn rectangle in a random place
 randy=int(random.randrange(0,height))
-yc = width/2
+yc = width/2    #Spawn circle in the center of the window
 xc = height/2
 rcircle = hbox/2
+
 rect=pygame.Rect(randx, randy, wbox, hbox) #Places rectangle
 pygame.draw.rect(window, (0,0,0), rect)    #Draws rectangle
 pygame.draw.circle(window, (255,255,255),(xc, yc), rcircle)
@@ -68,14 +69,16 @@ run=True
 
 #Main loop for the game:
 while run==True:
-    pygame.time.delay(100) #Delay of starting the game
+    pygame.time.delay(10) #Delay of starting the game
     for case in pygame.event.get():
         if case.type == pygame.QUIT:    #Quits program if window closed
             run=False
+
     #How to get position of the mouse
     #x,y=pygame.mouse.get_pos()
     #print("( "+str(x)+" , "+str(y)+" )")
     keyPressed = pygame.key.get_pressed()
+
     #Sees key presses and moves
     if keyPressed[pygame.K_UP]:
         if rect.y < 0:
@@ -110,18 +113,20 @@ while run==True:
 
     point = (xc,yc)     #Circle point
     collide = rect.collidepoint(point)  #Sees if it is collides
-    if collide:
-        rcircle = rcircle+(hbox/2)
+    if collide: #If collide is true
+        rcircle = rcircle+(hbox/2)  #Increase circle size
         randx=int(random.randrange(0,width))
         randy=int(random.randrange(0,height))
         rect=pygame.Rect(randx, randy, wbox, hbox)      #Resets the square
-        cspeed-=2   #Decreases circle speed
+        cspeed-=.3   #Decreases circle speed
+
     pygame.draw.rect(window, (0,0,0), rect)
     pygame.draw.circle(window, (255,255,255),(xc, yc), rcircle)
     pygame.display.flip()
-    if rcircle == hbox*2+hbox:  #If the Circle eats the box 5 times the circle wins
+
+    if rcircle >= hbox*2:  #If the Circle eats the box 3 times the circle wins
         pygame.time.delay(1000)
-        pygame.quit
+        pygame.quit()
         print("CIRCLE WINS!")
         break
 
