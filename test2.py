@@ -36,6 +36,7 @@ width=800
 height = 800
 currentBackColor = white
 
+
 #List of what to display on different menus
 Setting_messages = ["SCREEN SIZE", "BACKGROUND COLOR","OBJECT COLOR","SOUNDS"]  
 menu_messages=["INTRUCTIONS","LEVEL 1","LEVEL 2", "SETTINGS","SCOREBOARD", "EXIT"]
@@ -113,8 +114,9 @@ def pageClicks(menu,sel,mouse_pos):
     elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+300 and mouse_pos[1]<=y_max+300:
         printPage((menu_messages[3]),True)
         if menu == menu_messages:
+            menu = Setting_messages
+            sel = Settings_sels
             displayMenu(Setting_messages)
-            pageClicks(menu_messages, Menu_sels, mouse_pos)
         page = sel[3]
     elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+400 and mouse_pos[1]<=y_max+400:
         printPage((menu_messages[4]),True)
