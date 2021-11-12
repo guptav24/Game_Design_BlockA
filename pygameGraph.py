@@ -25,6 +25,7 @@ boulderColor = colors.get('blue')
 screen.fill(myColor)
 py.display.set_caption("Moving Square")
 py.display.flip()
+bg=py.image.load("Images\\bgSmaller.jpg")
 #parameters to define our square
 x=width/2
 y=height/2
@@ -36,6 +37,7 @@ square=py.Rect(x,y,wbox, hbox )
 objColor=colors.get('red')
 py.draw.rect(screen, objColor, square)
 py.draw.rect(screen,boulderColor,boulder)
+screen.blit(bg,(0,0))
 py.display.update()
 #create speed to move the object on the screen
 speed = 7
@@ -85,7 +87,7 @@ while run:
     #     square.x = square.x-wbox
     #     move=True
 
-    screen.fill(myColor)
+    screen.blit(bg,(0,0))
     py.draw.rect(screen,boulderColor,boulder)
     py.draw.rect(screen, objColor, square)
     py.display.flip()
