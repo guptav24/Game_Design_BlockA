@@ -18,8 +18,7 @@ Settings = 5
 Scoreboard = 6
 ScreenSize = 7
 BackColor = 8
-ObjColor = 9
-Sounds = 10
+
 
 page = MainMenu
 
@@ -44,7 +43,7 @@ y_min = 190
 y_max = 215
 
 #List of what to display on different menus
-Setting_messages = ["SCREEN SIZE", "BACKGROUND COLOR","OBJECT COLOR","SOUNDS"]  
+Setting_messages = ["SCREEN SIZE", "BACKGROUND COLOR"]  
 menu_messages=["INTRUCTIONS","LEVEL 1","LEVEL 2", "SETTINGS","SCOREBOARD", "EXIT"]
 
 #Functions:
@@ -170,18 +169,12 @@ while run:
         elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+100 and mouse_pos[1]<=y_max+100:
             printPage("BACKGROUND",True)
             page = BackColor
-        elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+200 and mouse_pos[1]<=y_max+200:
-            printPage("OBJECT COLOR",True)
-            page = ObjColor
-        elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+300 and mouse_pos[1]<=y_max+300:
-            printPage("SOUNDS", True)
-            page = Sounds
          
         #Reset the mosue position
         mouse_pos = (0,0)
 
     #If you click back when Settings was the previous page
-    if page == ScreenSize or page == BackColor or page == ObjColor or page == Sounds:
+    if page == ScreenSize or page == BackColor:
         if mouse_pos[0]>=50 and mouse_pos[0]<=200 and mouse_pos[1]>=720 and mouse_pos[1]<=y_max+800:
             printPage("SETTINGS",True)
             page = Settings

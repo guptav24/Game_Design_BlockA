@@ -19,11 +19,11 @@ y = 380
 width = 40
 height = 60
 vel = 5
-ObsX = [129,194,236,300,391]
-BorX = 50
-BorX2 = ObsX[0]
-PlatY = 356-height
-PlatY2 = 254-height
+
+BorList = [50,129,194,236,300,391,484,570,653,762]
+BorLeft = BorList[0]
+BorRight = BorList[1]
+platforms = [356-height, 254-height,202-height,158-height]
 
 
 clock = py.time.Clock()
@@ -54,9 +54,9 @@ def redrawGameWindow():
         
     py.display.update() 
     
-count = 0
 count1 = 1
 count2 = 2
+count_plat = 0
 
 run = True
 
@@ -71,13 +71,13 @@ while run:
     keys = py.key.get_pressed()
     
     if keys[py.K_LEFT] and x > vel: 
-        if x > BorX:
+        if x > BorLeft or isJump==True:
             x -= vel
             left = True
             right = False
 
     elif keys[py.K_RIGHT] and x < 500 - vel - width:  
-        if x < BorX2 - width or isJump==True:
+        if x < BorRight - width or isJump==True:
             x += vel
             left = False
             right = True
@@ -97,18 +97,19 @@ while run:
         if jumpCount >= -10:
             y -= (jumpCount * abs(jumpCount)) * 0.25
             jumpCount -= 1
-            if x>ObsX[count] and y >= PlatY:
+            if x>BorRight and y >= platforms[count_plat]:
                 isJump = False
                 jumpCount = 10
-                BorX = ObsX[count1]
-                BorX2 = ObsX[count2]
-                count+=1
+                BorLeft = BorList[count1]
+                BorRight = BorList[count2]
                 count1+=1
                 count2+=1
-                PlatY = PlatY2
+                count_plat+=1
         else: 
             jumpCount = 10
             isJump = False
+        
+            
 
     redrawGameWindow() 
     

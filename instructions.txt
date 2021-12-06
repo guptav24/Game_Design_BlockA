@@ -1,0 +1,4 @@
+The game will flash you a couple images of images. Memorize these.
+After, use the arrow keys on the keyboard and retype what you saw.
+Another set of arrows will flash. Repeat until you get it incorrect.
+The different levels change the amount of time the arrows are displayed.
