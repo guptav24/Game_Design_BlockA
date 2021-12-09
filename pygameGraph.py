@@ -52,6 +52,7 @@ while run:
             run =False
             
     keyPressed= py.key.get_pressed()
+    
     if keyPressed[py.K_RIGHT] and square.x <WIDTH-wbox-speed :
         if square.colliderect(boulder):
             square.x-=3
