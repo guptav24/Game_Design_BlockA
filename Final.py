@@ -4,7 +4,7 @@
 
 import os, pygame, random
 
-from pygame.constants import MOUSEBUTTONDOWN
+from pygame.constants import MOUSEBUTTONDOWN, K_w
 os.system('cls')
 
 #Files:
@@ -15,8 +15,11 @@ arrow_down = pygame.image.load("Images\\arrow_down.png")
 arrow_left = pygame.image.load("Images\\arrow_left.png")
 arrow_right = pygame.image.load("Images\\arrow_right.png")
 bg = pygame.image.load("Images\\background_big.jpg")
+check_mark = pygame.image.load("Images\\check.png")
+x_mark = pygame.image.load("Images\\x.png")
 arrows = [arrow_up,arrow_down,arrow_left,arrow_right]   #Array for all the arrows
 arrow_check = []    #Empty array that becomes the chosen arrows
+arrow_type_check = []
 
 #Instructions file
 myInstructions = open('instructions.txt','w')   #Opening file
@@ -35,7 +38,13 @@ Settings = 5
 Scoreboard = 6
 ScreenSize = 7
 BackColor = 8
-arrow_type = 9
+arrow_type1 = 9
+arrow_type2 = 0
+next = 10
+arrow_typeup = False
+arrow_typedown = False
+arrow_typeleft= False
+arrow_typeright=False
 
 page = MainMenu
 
@@ -67,6 +76,8 @@ backColor_messages=["RED", "BLUE","GREEN","BLACK"]
 
 #Game variables
 round = 1
+counter = 0
+score = 0
 
 #Functions:
 
@@ -187,125 +198,219 @@ while run:
             mouse_pressed = pygame.mouse.get_pressed()
             if mouse_pressed[0]:
                 mouse_pos = pygame.mouse.get_pos()
+        keys = pygame.key.get_pressed()
+    
+        if keys[pygame.K_LEFT]:
+            arrow_typeleft = True
+            arrow_typeup = False
+            arrow_typedown = False
+            arrow_typeright=False
+        if keys[pygame.K_RIGHT]:
+            arrow_typeright = True
+            arrow_typeup = False
+            arrow_typedown = False
+            arrow_typeleft= False
+        if keys[pygame.K_DOWN]:
+            arrow_typedown = True
+            arrow_typeup = False
+            arrow_typeleft= False
+            arrow_typeright=False
+        if keys[pygame.K_UP]:
+            arrow_typeup = True
+            arrow_typedown = False
+            arrow_typeleft= False
+            arrow_typeright=False
 
-    #Main Menu Navigation
-    if page == MainMenu:
-        if mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min and mouse_pos[1]<=y_max:
-            printPage("INSTRUCTIONS",True)
-            page = Instructions
-        elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+100 and mouse_pos[1]<=y_max+100:
-            level1_game()
-            page = Level1
+        #Main Menu Navigation
+        if page == MainMenu:
+            if mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min and mouse_pos[1]<=y_max:
+                printPage("INSTRUCTIONS",True)
+                page = Instructions
+            elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+100 and mouse_pos[1]<=y_max+100:
+                level1_game()
+                page = Level1
+                displayBack()
+            elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+200 and mouse_pos[1]<=y_max+200:
+                level2_game()
+                displayBack()
+                page = Level2
+            elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+300 and mouse_pos[1]<=y_max+300:
+                printPage("SETTINGS",True)
+                displayMenu(Setting_messages)
+                page = Settings
+            elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+400 and mouse_pos[1]<=y_max+400:
+                printPage("SCOREBOARD",True)
+                page = Scoreboard
+            elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+500 and mouse_pos[1]<=y_max+500:
+                break
+
+            #Reset the mouse position
+            mouse_pos = (0,0)
+
+        #Level 1 Game
+        if page==Level1 and check == 1:
+            check += 1
+            x = 0
+            for i in range (round): #How many times it prints arrows
+                rand_arrow = random.choice(arrows)  #Chooses random arrow
+                arrow_check.append(rand_arrow)  #Puts that arrow into the check array
+                win.blit(rand_arrow,((width/(round*2))-50+x,height/2-50)) #Places the arrows centered based on how many arrows there are
+                x+=width/round
+            pygame.display.flip()
+            pygame.time.delay(1000)
+            win.blit(bg,(0,0))
             displayBack()
-        elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+200 and mouse_pos[1]<=y_max+200:
-            level2_game()
+            pygame.display.flip()
+            x=0
+            page = arrow_type1   #Next page to type and check arrows
+
+        #Level 2 Game
+        if page == Level2 and check==1:
+            check += 1
+            x = 0
+            for i in range (round): #How many times it prints arrows
+                rand_arrow = random.choice(arrows)  #Chooses random arrow
+                arrow_check.append(rand_arrow)  #Puts that arrow into the check array
+                win.blit(rand_arrow,((width/(round*2))-50+x,height/2-50)) #Places the arrows centered based on how many arrows there are
+                x+=width/round
+            pygame.display.flip()
+            pygame.time.delay(700)
+            win.blit(bg,(0,0))
             displayBack()
-            page = Level2
-        elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+300 and mouse_pos[1]<=y_max+300:
-            printPage("SETTINGS",True)
-            displayMenu(Setting_messages)
-            page = Settings
-        elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+400 and mouse_pos[1]<=y_max+400:
-            printPage("SCOREBOARD",True)
-            page = Scoreboard
-        elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+500 and mouse_pos[1]<=y_max+500:
-            break
+            pygame.display.flip()
+            page = arrow_type2   #Next page to type and check arrows
+
+        if page == arrow_type1:
+            win.blit(bg,(0,0))
+            displayBack()
+            pygame.display.flip()
+            if counter!=round:
+                if arrow_typeup:
+                    arrow_type_check.append(arrow_up)
+                    win.blit(arrow_up,(width/2-50,height/2-50))
+                    pygame.display.flip()
+                    pygame.time.delay(200)
+                    counter+=1
+                if arrow_down:
+                    arrow_type_check.append(arrow_down)
+                    win.blit(arrow_down,(width/2-50,height/2-50))
+                    pygame.display.flip()
+                    pygame.time.delay(200)
+                    counter+=1
+                if arrow_left:
+                    arrow_type_check.append(arrow_left)
+                    win.blit(arrow_left,(width/2-50,height/2-50))
+                    pygame.display.flip()
+                    pygame.time.delay(200)
+                    counter+=1
+                if arrow_right:
+                    arrow_type_check.append(arrow_right)
+                    win.blit(arrow_right,(width/2-50,height/2-50))
+                    pygame.display.flip()
+                    pygame.time.delay(200)
+                    counter+=1
+            if counter == round:
+                if arrow_type_check == arrow_check:
+                    score+=1
+                    win.blit(bg, (0,0))
+                    win.blit(check_mark,(width/2-250,height/2-250))
+                    text = subtitle_font.render("NEXT",1,white)
+                    win.blit(text,(width-150,height-80))
+                    pygame.display.update()
+                    page = next
+                if arrow_type_check != arrow_check:
+                    round = 1
+                    check = 1
+                    counter = 0
+                    win.blit(bg, (0,0))
+                    arrow_type_check.clear()
+                    arrow_check.clear()
+                    win.blit(x_mark,(width/2-250,height/2-250))
+                    pygame.display.update()
+                    pygame.time.delay(800)
+                    printPage("MENU",False)
+                    page = MainMenu
+                    displayMenu(menu_messages)
+
+        if page == next:
+            if mouse_pos[0]>=width-200 and mouse_pos[0]<=width and mouse_pos[1]>=height-80 and mouse_pos[1]<=y_max+height:
+                level1_game()
+                if round <7:
+                    round+=1
+                check = 1
+                counter = 0
+                arrow_type_check.clear()
+                arrow_check.clear()
+                win.blit(bg,(0,0))
+                displayBack()
+                pygame.display.flip()
+                pygame.time.delay(1000)
+                page = Level1
+                
+
+
+        #If you click back when the previous page was Main Menu
+        if (page == Instructions or page == Level1 or page == Level2  or page==Scoreboard or page==Settings or page==arrow_type1 or page==arrow_type2):
+            if mouse_pos[0]>=50 and mouse_pos[0]<=200 and mouse_pos[1]>=height-80 and mouse_pos[1]<=y_max+height:
+                printPage("MENU",False)
+                page = MainMenu
+                displayMenu(menu_messages)
+
+        #Show the Instructions
+        if page==Instructions:
+            displayInstructionText()
+
+        #Settings navigation
+        if page==Settings:
+            if mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min and mouse_pos[1]<=y_max:
+                printPage("SCREEN SIZE",True)
+                page = ScreenSize
+            elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+100 and mouse_pos[1]<=y_max+100:
+                printPage("BACKGROUND",True)
+                page = BackColor
+            
+            #Reset the mosue position
+            mouse_pos = (0,0)
+
+        #If you click back when Settings was the previous page
+        if page == ScreenSize or page == BackColor:
+            if mouse_pos[0]>=50 and mouse_pos[0]<=200 and mouse_pos[1]>=height-80 and mouse_pos[1]<=y_max+height:
+                printPage("SETTINGS",True)
+                page = Settings
+                displayMenu(Setting_messages)
+
+        #Screen Size Menu
+        if page== ScreenSize:
+            displayMenu(size_messages)
+            if mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min and mouse_pos[1]<=y_max:
+                changeScreenSize(800,800)
+            elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+100 and mouse_pos[1]<=y_max+100:
+                changeScreenSize(700,700)
+            elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+200 and mouse_pos[1]<=y_max+200:
+                changeScreenSize(600,600)
+
+        #Background Color Menu
+        if page == BackColor:
+            displayMenu(backColor_messages)
+            if mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min and mouse_pos[1]<=y_max:
+                currentBackColor = red
+                printPage("BACKGROUND",True)
+            elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+100 and mouse_pos[1]<=y_max+100:
+                currentBackColor = blue
+                printPage("BACKGROUND",True)
+            elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+200 and mouse_pos[1]<=y_max+200:
+                currentBackColor = green
+                printPage("BACKGROUND",True)
+            elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+300 and mouse_pos[1]<=y_max+300:
+                currentBackColor = black
+                printPage("BACKGROUND",True)
 
         #Reset the mouse position
-        mouse_pos = (0,0)
+        mouse_pos = (0,0)     
 
-    #Level 1 Game
-    if page==Level1 and check == 1:
-        check += 1
-        for i in range (round): #How many times it prints arrows
-            x = 0
-            rand_arrow = random.choice(arrows)  #Chooses random arrow
-            arrow_check.append(rand_arrow)  #Puts that arrow into the check array
-            win.blit(rand_arrow,((width/(round*2))-50+x,height/2-50)) #Places the arrows centered based on how many arrows there are
-            pygame.display.flip()
-            pygame.time.delay(1000)
-            win.blit(bg,(0,0))
-            displayBack()
-            pygame.display.flip()
-            pygame.time.delay(1000)
-            x+=width/round
-        page = arrow_type   #Next page to type and check arrows
-
-    #Level 2 Game
-    if page == Level2 and check==1:
-        check += 1
-        for i in range (round): #How many times it prints arrows
-            x = 0
-            rand_arrow = random.choice(arrows)  #Chooses random arrow
-            arrow_check.append(rand_arrow)  #Puts that arrow into the check array
-            win.blit(rand_arrow,((width/(round*2))-50+x,height/2-50)) #Places the arrows centered based on how many arrows there are
-            pygame.display.flip()
-            pygame.time.delay(700)
-            win.blit(bg,(0,0))
-            displayBack()
-            pygame.display.flip()
-            pygame.time.delay(700)
-            x+=width/round
-        page = arrow_type   #Next page to type and check arrows
-
-
-    #If you click back when the previous page was Main Menu
-    if (page == Instructions or page == Level1 or page == Level2  or page==Scoreboard or page==Settings or page==arrow_type):
-        if mouse_pos[0]>=50 and mouse_pos[0]<=200 and mouse_pos[1]>=height-80 and mouse_pos[1]<=y_max+height:
-            printPage("MENU",False)
-            page = MainMenu
-            displayMenu(menu_messages)
-
-    #Show the Instructions
-    if page==Instructions:
-        displayInstructionText()
-
-    #Settings navigation
-    if page==Settings:
-        if mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min and mouse_pos[1]<=y_max:
-            printPage("SCREEN SIZE",True)
-            page = ScreenSize
-        elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+100 and mouse_pos[1]<=y_max+100:
-            printPage("BACKGROUND",True)
-            page = BackColor
-         
-        #Reset the mosue position
-        mouse_pos = (0,0)
-
-    #If you click back when Settings was the previous page
-    if page == ScreenSize or page == BackColor:
-        if mouse_pos[0]>=50 and mouse_pos[0]<=200 and mouse_pos[1]>=height-80 and mouse_pos[1]<=y_max+height:
-            printPage("SETTINGS",True)
-            page = Settings
-            displayMenu(Setting_messages)
-
-    #Screen Size Menu
-    if page== ScreenSize:
-        displayMenu(size_messages)
-        if mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min and mouse_pos[1]<=y_max:
-            changeScreenSize(800,800)
-        elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+100 and mouse_pos[1]<=y_max+100:
-            changeScreenSize(700,700)
-        elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+200 and mouse_pos[1]<=y_max+200:
-            changeScreenSize(600,600)
-
-    #Background Color Menu
-    if page == BackColor:
-        displayMenu(backColor_messages)
-        if mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min and mouse_pos[1]<=y_max:
-            currentBackColor = red
-            printPage("BACKGROUND",True)
-        elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+100 and mouse_pos[1]<=y_max+100:
-            currentBackColor = blue
-            printPage("BACKGROUND",True)
-        elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+200 and mouse_pos[1]<=y_max+200:
-            currentBackColor = green
-            printPage("BACKGROUND",True)
-        elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+300 and mouse_pos[1]<=y_max+300:
-            currentBackColor = black
-            printPage("BACKGROUND",True)
-
-    #Reset the mouse position
-    mouse_pos = (0,0)            
+        arrow_typeup = False
+        arrow_typedown = False
+        arrow_typeleft= False
+        arrow_typeright=False       
 
 pygame.quit()
