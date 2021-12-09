@@ -21,6 +21,9 @@ arrows = [arrow_up,arrow_down,arrow_left,arrow_right]   #Array for all the arrow
 arrow_check = []    #Empty array that becomes the chosen arrows
 arrow_type_check = []
 
+myScoreboard = open('scoreboard.txt','w')
+myScoreboard.close
+
 #Instructions file
 myInstructions = open('instructions.txt','w')   #Opening file
 #Text in the file
@@ -198,8 +201,8 @@ while run:
             mouse_pressed = pygame.mouse.get_pressed()
             if mouse_pressed[0]:
                 mouse_pos = pygame.mouse.get_pos()
+        
         keys = pygame.key.get_pressed()
-    
         if keys[pygame.K_LEFT]:
             arrow_typeleft = True
             arrow_typeup = False
@@ -284,26 +287,26 @@ while run:
             win.blit(bg,(0,0))
             displayBack()
             pygame.display.flip()
-            if counter!=round:
-                if arrow_typeup:
+            if counter<round:
+                if arrow_typeup==True:
                     arrow_type_check.append(arrow_up)
                     win.blit(arrow_up,(width/2-50,height/2-50))
                     pygame.display.flip()
                     pygame.time.delay(200)
                     counter+=1
-                if arrow_down:
+                if arrow_down==True:
                     arrow_type_check.append(arrow_down)
                     win.blit(arrow_down,(width/2-50,height/2-50))
                     pygame.display.flip()
                     pygame.time.delay(200)
                     counter+=1
-                if arrow_left:
+                if arrow_left==True:
                     arrow_type_check.append(arrow_left)
                     win.blit(arrow_left,(width/2-50,height/2-50))
                     pygame.display.flip()
                     pygame.time.delay(200)
                     counter+=1
-                if arrow_right:
+                if arrow_right==True:
                     arrow_type_check.append(arrow_right)
                     win.blit(arrow_right,(width/2-50,height/2-50))
                     pygame.display.flip()
@@ -314,8 +317,8 @@ while run:
                     score+=1
                     win.blit(bg, (0,0))
                     win.blit(check_mark,(width/2-250,height/2-250))
-                    text = subtitle_font.render("NEXT",1,white)
-                    win.blit(text,(width-150,height-80))
+                    next_text = subtitle_font.render("NEXT",1,white)
+                    win.blit(next_text,(width-150,height-80))
                     pygame.display.update()
                     page = next
                 if arrow_type_check != arrow_check:
@@ -327,10 +330,20 @@ while run:
                     arrow_check.clear()
                     win.blit(x_mark,(width/2-250,height/2-250))
                     pygame.display.update()
-                    pygame.time.delay(800)
+                    pygame.time.delay(1000)
+                    print (score)
+                    win.blit(bg,(0,0))
+                    score_text = subtitle_font.render("YOUR SCORE: " + str(score),1,white)
+                    win.blit(score_text,(width/2-score_text.get_width()/2,height/2))
+                    displayBack()
+                    pygame.display.update()
+                    pygame.time.delay(1000)
                     printPage("MENU",False)
                     page = MainMenu
+                    score = 0
                     displayMenu(menu_messages)
+
+
 
         if page == next:
             if mouse_pos[0]>=width-200 and mouse_pos[0]<=width and mouse_pos[1]>=height-80 and mouse_pos[1]<=y_max+height:
