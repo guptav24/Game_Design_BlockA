@@ -87,7 +87,7 @@ while run==True:
             rect.y -= rspeed
     if keyPressed[pygame.K_DOWN]:
         if rect.y>height:
-            rect.y = 0
+            rect.y = 0  
         else:
             rect.y += rspeed
     if keyPressed[pygame.K_LEFT]:

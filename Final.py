@@ -337,7 +337,7 @@ while run:
                     win.blit(score_text,(width/2-score_text.get_width()/2,height/2))
                     displayBack()
                     pygame.display.update()
-                    pygame.time.delay(1000)
+                    pygame.time.delay(1500)
                     printPage("MENU",False)
                     page = MainMenu
                     score = 0
