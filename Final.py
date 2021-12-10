@@ -21,8 +21,8 @@ arrows = [arrow_up,arrow_down,arrow_left,arrow_right]   #Array for all the arrow
 arrow_check = []    #Empty array that becomes the chosen arrows
 arrow_type_check = []
 
-myScoreboard = open('scoreboard.txt','w')
-myScoreboard.close
+maxScore = 0
+maxScore2 = 0
 
 #Instructions file
 myInstructions = open('instructions.txt','w')   #Opening file
@@ -81,8 +81,15 @@ backColor_messages=["RED", "BLUE","GREEN","BLACK"]
 round = 1
 counter = 0
 score = 0
+score2 = 0
 
 #Functions:
+
+def updateScores(): #Funvtion to update scores
+    myScoreboard=open('scoreboard.txt','w')
+    myScoreboard.write('High Score (LVL1): '+str(maxScore)+'\n High Score (LVL2): '+str(maxScore2))
+    myScoreboard.close()
+
 
 def level1_game():
     win.blit(bg,(0,0))
@@ -127,6 +134,17 @@ def displayBack():
     win.blit(text,(50,height-80))
     pygame.display.update()
     pygame.time.delay(100)
+
+def displayScoreboard():
+    height = 170
+    myScoreboard=open('scoreboard.txt','r')
+    for line in myScoreboard.readlines():
+        text = subtitle_font.render(line,1,white)
+        win.blit(text, (width/2-text.get_width()/2,height))
+        pygame.display.update()
+        pygame.time.delay(100)
+        height+=60
+    myScoreboard.close()
 
 def displayInstructionText():
     height = 170
@@ -277,10 +295,11 @@ while run:
                 win.blit(rand_arrow,((width/(round*2))-50+x,height/2-50)) #Places the arrows centered based on how many arrows there are
                 x+=width/round
             pygame.display.flip()
-            pygame.time.delay(700)
+            pygame.time.delay(600)
             win.blit(bg,(0,0))
             displayBack()
             pygame.display.flip()
+            x=0
             page = arrow_type2   #Next page to type and check arrows
 
         if page == arrow_type1:
@@ -331,17 +350,85 @@ while run:
                     win.blit(x_mark,(width/2-250,height/2-250))
                     pygame.display.update()
                     pygame.time.delay(1000)
-                    print (score)
                     win.blit(bg,(0,0))
                     score_text = subtitle_font.render("YOUR SCORE: " + str(score),1,white)
                     win.blit(score_text,(width/2-score_text.get_width()/2,height/2))
-                    displayBack()
                     pygame.display.update()
                     pygame.time.delay(1500)
                     printPage("MENU",False)
                     page = MainMenu
-                    score = 0
                     displayMenu(menu_messages)
+                    if score>=maxScore:  #Checks high score
+                        maxScore = score
+                        updateScores()
+                    myScoreboard=open('scoreboard.txt','w')
+                    myScoreboard.write('High Score (LVL1): '+str(maxScore)+'\n High Score (LVL2): '+str(maxScore2))
+                    myScoreboard.close()
+                    score = 0
+        
+        if page == arrow_type2:
+            win.blit(bg,(0,0))
+            displayBack()
+            pygame.display.flip()
+            if counter<round:
+                if arrow_typeup==True:
+                    arrow_type_check.append(arrow_up)
+                    win.blit(arrow_up,(width/2-50,height/2-50))
+                    pygame.display.flip()
+                    pygame.time.delay(200)
+                    counter+=1
+                if arrow_down==True:
+                    arrow_type_check.append(arrow_down)
+                    win.blit(arrow_down,(width/2-50,height/2-50))
+                    pygame.display.flip()
+                    pygame.time.delay(200)
+                    counter+=1
+                if arrow_left==True:
+                    arrow_type_check.append(arrow_left)
+                    win.blit(arrow_left,(width/2-50,height/2-50))
+                    pygame.display.flip()
+                    pygame.time.delay(200)
+                    counter+=1
+                if arrow_right==True:
+                    arrow_type_check.append(arrow_right)
+                    win.blit(arrow_right,(width/2-50,height/2-50))
+                    pygame.display.flip()
+                    pygame.time.delay(200)
+                    counter+=1
+            if counter == round:
+                if arrow_type_check == arrow_check:
+                    score2+=1
+                    win.blit(bg, (0,0))
+                    win.blit(check_mark,(width/2-250,height/2-250))
+                    next_text = subtitle_font.render("NEXT",1,white)
+                    win.blit(next_text,(width-150,height-80))
+                    pygame.display.update()
+                    page = next
+                if arrow_type_check != arrow_check:
+                    round = 1
+                    check = 1
+                    counter = 0
+                    win.blit(bg, (0,0))
+                    arrow_type_check.clear()
+                    arrow_check.clear()
+                    win.blit(x_mark,(width/2-250,height/2-250))
+                    pygame.display.update()
+                    pygame.time.delay(1000)
+                    win.blit(bg,(0,0))
+                    score2_text = subtitle_font.render("YOUR SCORE: " + str(score),1,white)
+                    win.blit(score2_text,(width/2-score2_text.get_width()/2,height/2))
+                    pygame.display.update()
+                    pygame.time.delay(1500)
+                    printPage("MENU",False)
+                    page = MainMenu
+                    displayMenu(menu_messages)
+                    if score2>=maxScore2:  #Checks high score
+                        maxScore2 = score2
+                        updateScores()
+                    myScoreboard=open('scoreboard.txt','w')
+                    myScoreboard.write('High Score (LVL1): '+str(maxScore)+'\nHigh Score (LVL2): '+str(maxScore2))
+                    myScoreboard.close()
+                    score2 = 0
 
 
 
@@ -372,6 +459,9 @@ while run:
         #Show the Instructions
         if page==Instructions:
             displayInstructionText()
+
+        if page==Scoreboard:
+            displayScoreboard()
 
         #Settings navigation
         if page==Settings:
@@ -426,4 +516,5 @@ while run:
         arrow_typeleft= False
         arrow_typeright=False       
 
+updateScores()
 pygame.quit()
