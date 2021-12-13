@@ -21,6 +21,7 @@ arrows = [arrow_up,arrow_down,arrow_left,arrow_right]   #Array for all the arrow
 arrow_check = []    #Empty array that becomes the chosen arrows
 arrow_type_check = []
 
+#maxScore variables
 maxScore = 0
 maxScore2 = 0
 
@@ -43,7 +44,9 @@ ScreenSize = 7
 BackColor = 8
 arrow_type1 = 9
 arrow_type2 = 0
-next = 10
+next1 = 10
+next2 = 11
+#Booleans for when you press an arrow key
 arrow_typeup = False
 arrow_typedown = False
 arrow_typeleft= False
@@ -81,21 +84,23 @@ backColor_messages=["RED", "BLUE","GREEN","BLACK"]
 round = 1
 counter = 0
 score = 0
-score2 = 0
+score2 = 0  #Level 2 score
 
 #Functions:
 
+#This function updates the score
 def updateScores(): #Funvtion to update scores
     myScoreboard=open('scoreboard.txt','w')
-    myScoreboard.write('High Score (LVL1): '+str(maxScore)+'\n High Score (LVL2): '+str(maxScore2))
+    myScoreboard.write('High Score (LVL1): '+str(maxScore)+'\nHigh Score (LVL2): '+str(maxScore2))
     myScoreboard.close()
 
-
+#THis runs level 1
 def level1_game():
     win.blit(bg,(0,0))
     pygame.display.set_caption("Memory Game")
     pygame.display.flip()
 
+#This runs level 2
 def level2_game():
     win.blit(bg,(0,0))
     pygame.display.set_caption("Memory Game")
@@ -135,10 +140,11 @@ def displayBack():
     pygame.display.update()
     pygame.time.delay(100)
 
+#This displays scoreboard text
 def displayScoreboard():
     height = 170
-    myScoreboard=open('scoreboard.txt','r')
-    for line in myScoreboard.readlines():
+    myScoreboard=open('scoreboard.txt','r') #opens the file
+    for line in myScoreboard.readlines():   #Reads the file and prints each letter on the screen
         text = subtitle_font.render(line,1,white)
         win.blit(text, (width/2-text.get_width()/2,height))
         pygame.display.update()
@@ -146,6 +152,7 @@ def displayScoreboard():
         height+=60
     myScoreboard.close()
 
+#Displays the Instructions file
 def displayInstructionText():
     height = 170
     myInstructions=open('instructions.txt','r')
@@ -203,6 +210,7 @@ win.fill(currentBackColor)
 displayTitle("MENU")
 displayMenu(menu_messages)
 check = 1
+keys = pygame.key.get_pressed()
 
 #Main loop
 run = True
@@ -219,28 +227,30 @@ while run:
             mouse_pressed = pygame.mouse.get_pressed()
             if mouse_pressed[0]:
                 mouse_pos = pygame.mouse.get_pos()
-        
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            arrow_typeleft = True
-            arrow_typeup = False
-            arrow_typedown = False
-            arrow_typeright=False
-        if keys[pygame.K_RIGHT]:
-            arrow_typeright = True
-            arrow_typeup = False
-            arrow_typedown = False
-            arrow_typeleft= False
-        if keys[pygame.K_DOWN]:
-            arrow_typedown = True
-            arrow_typeup = False
-            arrow_typeleft= False
-            arrow_typeright=False
-        if keys[pygame.K_UP]:
-            arrow_typeup = True
-            arrow_typedown = False
-            arrow_typeleft= False
-            arrow_typeright=False
+        if eve.type==pygame.KEYDOWN:
+            keys = pygame.key.get_pressed()
+            
+            #Checks if you typed out arrows
+            if keys[pygame.K_LEFT]:
+                arrow_typeleft = True
+                arrow_typeup = False
+                arrow_typedown = False
+                arrow_typeright=False
+            if keys[pygame.K_RIGHT]:
+                arrow_typeright = True
+                arrow_typeup = False
+                arrow_typedown = False
+                arrow_typeleft= False
+            if keys[pygame.K_DOWN]:
+                arrow_typedown = True
+                arrow_typeup = False
+                arrow_typeleft= False
+                arrow_typeright=False
+            if keys[pygame.K_UP]:
+                arrow_typeup = True
+                arrow_typedown = False
+                arrow_typeleft= False
+                arrow_typeright=False
 
         #Main Menu Navigation
         if page == MainMenu:
@@ -263,6 +273,8 @@ while run:
                 printPage("SCOREBOARD",True)
                 page = Scoreboard
             elif mouse_pos[0]>=70 and mouse_pos[0]<=230 and mouse_pos[1]>=y_min+500 and mouse_pos[1]<=y_max+500:
+                run=False
+                pygame.quit()
                 break
 
             #Reset the mouse position
@@ -278,7 +290,7 @@ while run:
                 win.blit(rand_arrow,((width/(round*2))-50+x,height/2-50)) #Places the arrows centered based on how many arrows there are
                 x+=width/round
             pygame.display.flip()
-            pygame.time.delay(1000)
+            pygame.time.delay(800)
             win.blit(bg,(0,0))
             displayBack()
             pygame.display.flip()
@@ -295,52 +307,54 @@ while run:
                 win.blit(rand_arrow,((width/(round*2))-50+x,height/2-50)) #Places the arrows centered based on how many arrows there are
                 x+=width/round
             pygame.display.flip()
-            pygame.time.delay(600)
+            pygame.time.delay(500)
             win.blit(bg,(0,0))
             displayBack()
             pygame.display.flip()
             x=0
             page = arrow_type2   #Next page to type and check arrows
 
+        #Where you type arrows for level 1
         if page == arrow_type1:
             win.blit(bg,(0,0))
             displayBack()
             pygame.display.flip()
-            if counter<round:
+            if counter<round:   #prints arrows until you printed all the arrows you need to
                 if arrow_typeup==True:
                     arrow_type_check.append(arrow_up)
                     win.blit(arrow_up,(width/2-50,height/2-50))
                     pygame.display.flip()
                     pygame.time.delay(200)
                     counter+=1
-                if arrow_down==True:
+                if arrow_typedown==True:
                     arrow_type_check.append(arrow_down)
                     win.blit(arrow_down,(width/2-50,height/2-50))
                     pygame.display.flip()
                     pygame.time.delay(200)
                     counter+=1
-                if arrow_left==True:
+                if arrow_typeleft==True:
                     arrow_type_check.append(arrow_left)
                     win.blit(arrow_left,(width/2-50,height/2-50))
                     pygame.display.flip()
                     pygame.time.delay(200)
                     counter+=1
-                if arrow_right==True:
+                if arrow_typeright==True:
                     arrow_type_check.append(arrow_right)
                     win.blit(arrow_right,(width/2-50,height/2-50))
                     pygame.display.flip()
                     pygame.time.delay(200)
                     counter+=1
             if counter == round:
-                if arrow_type_check == arrow_check:
-                    score+=1
+                if arrow_type_check == arrow_check: #Checks if you printed the right arrows
+                    score+=1    #Adds to score
                     win.blit(bg, (0,0))
                     win.blit(check_mark,(width/2-250,height/2-250))
                     next_text = subtitle_font.render("NEXT",1,white)
                     win.blit(next_text,(width-150,height-80))
                     pygame.display.update()
-                    page = next
-                if arrow_type_check != arrow_check:
+                    page = next1    
+                if arrow_type_check != arrow_check: #If you got it wrong
+                    #Resets everything, displays score, and returns to menu
                     round = 1
                     check = 1
                     counter = 0
@@ -362,49 +376,51 @@ while run:
                         maxScore = score
                         updateScores()
                     myScoreboard=open('scoreboard.txt','w')
-                    myScoreboard.write('High Score (LVL1): '+str(maxScore)+'\n High Score (LVL2): '+str(maxScore2))
+                    myScoreboard.write('High Score (LVL1): '+str(maxScore)+'\nHigh Score (LVL2): '+str(maxScore2))
                     myScoreboard.close()
                     score = 0
         
+        #Where you type arrows for level 2
         if page == arrow_type2:
             win.blit(bg,(0,0))
             displayBack()
             pygame.display.flip()
-            if counter<round:
+            if counter<round:   #prints arrows until you printed all the arrows you need to
                 if arrow_typeup==True:
                     arrow_type_check.append(arrow_up)
                     win.blit(arrow_up,(width/2-50,height/2-50))
                     pygame.display.flip()
                     pygame.time.delay(200)
                     counter+=1
-                if arrow_down==True:
+                if arrow_typedown==True:
                     arrow_type_check.append(arrow_down)
                     win.blit(arrow_down,(width/2-50,height/2-50))
                     pygame.display.flip()
                     pygame.time.delay(200)
                     counter+=1
-                if arrow_left==True:
+                if arrow_typeleft==True:
                     arrow_type_check.append(arrow_left)
                     win.blit(arrow_left,(width/2-50,height/2-50))
                     pygame.display.flip()
                     pygame.time.delay(200)
                     counter+=1
-                if arrow_right==True:
+                if arrow_typeright==True:
                     arrow_type_check.append(arrow_right)
                     win.blit(arrow_right,(width/2-50,height/2-50))
                     pygame.display.flip()
                     pygame.time.delay(200)
                     counter+=1
             if counter == round:
-                if arrow_type_check == arrow_check:
-                    score2+=1
+                if arrow_type_check == arrow_check: #Checks if you printed the right arrows
+                    score2+=1   #Adds to score
                     win.blit(bg, (0,0))
                     win.blit(check_mark,(width/2-250,height/2-250))
                     next_text = subtitle_font.render("NEXT",1,white)
                     win.blit(next_text,(width-150,height-80))
                     pygame.display.update()
-                    page = next
-                if arrow_type_check != arrow_check:
+                    page = next2
+                if arrow_type_check != arrow_check: #If you got it wrong
+                    #Resets everything, displays score, and returns to menu
                     round = 1
                     check = 1
                     counter = 0
@@ -415,7 +431,7 @@ while run:
                     pygame.display.update()
                     pygame.time.delay(1000)
                     win.blit(bg,(0,0))
-                    score2_text = subtitle_font.render("YOUR SCORE: " + str(score),1,white)
+                    score2_text = subtitle_font.render("YOUR SCORE: " + str(score2),1,white)
                     win.blit(score2_text,(width/2-score2_text.get_width()/2,height/2))
                     pygame.display.update()
                     pygame.time.delay(1500)
@@ -431,8 +447,8 @@ while run:
                     score2 = 0
 
 
-
-        if page == next:
+        #Next page for level 1
+        if page == next1:   
             if mouse_pos[0]>=width-200 and mouse_pos[0]<=width and mouse_pos[1]>=height-80 and mouse_pos[1]<=y_max+height:
                 level1_game()
                 if round <7:
@@ -446,6 +462,22 @@ while run:
                 pygame.display.flip()
                 pygame.time.delay(1000)
                 page = Level1
+
+        #Next page for level 2
+        if page == next2:
+            if mouse_pos[0]>=width-200 and mouse_pos[0]<=width and mouse_pos[1]>=height-80 and mouse_pos[1]<=y_max+height:
+                level2_game()
+                if round <7:
+                    round+=1
+                check = 1
+                counter = 0
+                arrow_type_check.clear()
+                arrow_check.clear()
+                win.blit(bg,(0,0))
+                displayBack()
+                pygame.display.flip()
+                pygame.time.delay(1000)
+                page = Level2
                 
 
 
