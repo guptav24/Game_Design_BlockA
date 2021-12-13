@@ -28,7 +28,7 @@ maxScore2 = 0
 #Instructions file
 myInstructions = open('instructions.txt','w')   #Opening file
 #Text in the file
-myInstructions.write("The game will flash you a couple images of images. Memorize these.\nAfter, use the arrow keys on the keyboard and retype what you saw.\nAnother set of arrows will flash. Repeat until you get it incorrect.\nThe different levels change the amount of time the arrows are displayed.")
+myInstructions.write("The game will flash you a couple images of arrows. Memorize these.\nAfter, use the arrow keys on the keyboard and retype what you saw.\nAnother set of arrows will flash. Repeat until you get it incorrect.\nThe different levels change the amount of time the arrows are displayed.")
 myInstructions.close()  
 
 #Constants:
