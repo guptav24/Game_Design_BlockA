@@ -307,7 +307,7 @@ while run:
                 win.blit(rand_arrow,((width/(round*2))-50+x,height/2-50)) #Places the arrows centered based on how many arrows there are
                 x+=width/round
             pygame.display.flip()
-            pygame.time.delay(500)
+            pygame.time.delay(300)
             win.blit(bg,(0,0))
             displayBack()
             pygame.display.flip()
